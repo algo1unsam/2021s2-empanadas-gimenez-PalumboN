@@ -10,3 +10,43 @@ test "sueldo de Baigorria y de Galván" {
 	galvan.sueldo(12000)
 	assert.equals(12000, galvan.sueldo())
 }
+
+test "Gimenez pagando sueldos" {
+//registrar la venta de 500 empanadas por parte de Baigorria
+	baigorria.venderEmpanadas(500)
+//cambiar el sueldo de Galván a 20000
+	galvan.sueldo(20000)
+//registrar la venta de otras 300 empanadas por parte de Baigorria
+	baigorria.venderEmpanadas(300)
+//Entonces el sueldo de Baigorria es 800 * 15 = 12000, 
+	assert.equals(12000, baigorria.sueldo())
+//que Giménez le pague el sueldo a Baigorria
+	gimenez.pagarA(baigorria)
+//finalmente, que Giménez le pague el sueldo a Galván
+	gimenez.pagarA(galvan)
+//y el fondo de Gimenez tiene 268000 pesos.
+	assert.equals(268000, gimenez.dinero())
+	
+	
+// Agrego assert para saber si baigorria cobró lo esperado
+	assert.equals(12000, baigorria.totalCobrado())
+	assert.equals(0, baigorria.sueldo())
+}
+
+test "deudas y sueldos"{
+    galvan.gastar(4000)
+    assert.equals(4000, galvan.totalDeuda())
+    assert.equals(0, galvan.totalDinero())
+    galvan.gastar(8000)
+    assert.equals(12000, galvan.totalDeuda())
+    assert.equals(0, galvan.totalDinero())
+    gimenez.pagarA(galvan)
+    assert.equals(0, galvan.totalDeuda())
+    assert.equals(3000, galvan.totalDinero())
+    galvan.gastar(25000)
+    assert.equals(22000, galvan.totalDeuda())
+    assert.equals(0, galvan.totalDinero())
+    gimenez.pagarA(galvan)
+    assert.equals(7000, galvan.totalDeuda())
+    assert.equals(0, galvan.totalDinero())
+}
